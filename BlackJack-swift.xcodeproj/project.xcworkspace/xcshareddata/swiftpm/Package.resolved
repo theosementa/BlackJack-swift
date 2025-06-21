@@ -1,0 +1,24 @@
+{
+  "originHash" : "301412d114374b83d2356430230719d25a184bfaabfea1db86b7fd054fac1827",
+  "pins" : [
+    {
+      "identity" : "navigationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/theosementa/NavigationKit",
+      "state" : {
+        "revision" : "7f11d08380bf080f4d494a40a6492758cead1320",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "theokit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/theosementa/TheoKit",
+      "state" : {
+        "revision" : "a5507e00a1699d6f5af19e43d1e2dd7f00fcdfb1",
+        "version" : "1.1.3"
+      }
+    }
+  ],
+  "version" : 3
+}
