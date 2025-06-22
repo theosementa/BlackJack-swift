@@ -14,16 +14,22 @@ struct CardHandView: View {
     
     // MARK: - View
     var body: some View {
-        ZStack {
-            ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
-                Image(card.image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100)
-                    .offset(x: getHorizontalOffset(for: index))
+        if cards.isEmpty {
+            EmptyView()
+        } else {
+            ZStack {
+                ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
+                    Image(card.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100)
+                        .offset(x: getHorizontalOffset(for: index))
+                        .transition(.move(edge: .trailing))
+                }
             }
+            .frame(maxWidth: .infinity)
+            .animation(.smooth, value: cards.count)
         }
-        .frame(maxWidth: .infinity)
     }
     
     private func getHorizontalOffset(for index: Int) -> CGFloat {

@@ -9,19 +9,20 @@ import Foundation
 
 @Observable
 final class GameSession {
- 
+    
     var deck: Deck = .init()
     
     var bankHand: BankHand = .init()
     var playerHand: PlayerHand = .init()
     
     var playerBet: Int = 0
+    var sessionResult: GameSessionResult = .none
     var isGameStarted: Bool = false
     
 }
 
 extension GameSession {
- 
+    
     func validateBet() -> Bool {
         guard playerBet > 0 else { return false }
         isGameStarted = true
@@ -44,15 +45,69 @@ extension GameSession {
         isGameStarted = false
     }
     
-    func bankDrawCard() {
+    func bankDrawCard() async {
         while bankHand.value < 17 {
             guard let card = deck.drawCard() else { return }
             bankHand.cards.append(card)
+            
+            try? await Task.sleep(for: .seconds(0.8))
+        }
+    }
+
+    func playerDrawCard() {
+        guard isGameStarted else { return }
+        
+        if let card = deck.drawCard() {
+            playerHand.cards.append(card)
+        }
+        
+        if playerHand.value > 21 {
+            sessionResult = .bankWin
+        } else if playerHand.value == 21 {
+            playerHold()
         }
     }
     
-    func playerHold() {
-        bankDrawCard()
+    func evaluateGameResult() {
+        guard isGameStarted else { return }
+        
+        if playerHand.value > 21 {
+            sessionResult = .bankWin
+            return
+        }
+        
+        if playerHand.isBlackjack() {
+            if bankHand.isBlackjack() {
+                sessionResult = .equal
+            } else {
+                sessionResult = .playerWinWithBlackJack
+            }
+            return
+        }
+        
+        if bankHand.value > 21 {
+            sessionResult = .playerWin
+            return
+        }
+        
+        if playerHand.value > bankHand.value {
+            sessionResult = .playerWin
+        } else if playerHand.value < bankHand.value {
+            sessionResult = .bankWin
+        } else {
+            sessionResult = .equal
+        }
     }
-
+    
+    func playerDoubleDown() {
+        
+    }
+    
+    func playerHold() {
+        Task {
+            await bankDrawCard()
+            evaluateGameResult()
+        }
+    }
+    
 }
