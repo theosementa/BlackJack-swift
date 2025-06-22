@@ -12,7 +12,7 @@ import TheoKit
 struct BlackJack_swiftApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RunningGameScreen()
         }
     }
 }

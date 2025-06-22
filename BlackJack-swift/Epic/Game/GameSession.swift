@@ -18,10 +18,6 @@ final class GameSession {
     var playerBet: Int = 0
     var isGameStarted: Bool = false
     
-    init() {
-        deck.shuffle()
-    }
-    
 }
 
 extension GameSession {
@@ -29,6 +25,7 @@ extension GameSession {
     func validateBet() -> Bool {
         guard playerBet > 0 else { return false }
         isGameStarted = true
+        deck.shuffle()
         return true
     }
     
@@ -37,6 +34,14 @@ extension GameSession {
         
         playerHand.cards = [deck.drawCard(), deck.drawCard()].compactMap { $0 }
         bankHand.cards = [deck.drawCard()].compactMap { $0 }
+    }
+    
+    func resetGame() {
+        deck = Deck()
+        bankHand = BankHand()
+        playerHand = PlayerHand()
+        playerBet = 0
+        isGameStarted = false
     }
     
     func bankDrawCard() {
