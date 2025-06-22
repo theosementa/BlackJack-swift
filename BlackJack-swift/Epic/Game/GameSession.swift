@@ -103,7 +103,7 @@ extension GameSession {
                 sessionResult = .equal
             } else {
                 sessionResult = .playerWinWithBlackJack
-                PlayerStorage.addCoins(playerBet + (playerBet * 3 / 2))
+                PlayerStorage.addCoins(playerBet * 3 / 2)
             }
             return
         }

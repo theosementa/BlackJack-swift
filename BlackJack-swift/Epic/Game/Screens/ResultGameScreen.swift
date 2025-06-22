@@ -79,7 +79,7 @@ struct ResultGameScreen: View {
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.6))
+        .background(Color.black.opacity(0.8))
     }
     
     var color: Color {

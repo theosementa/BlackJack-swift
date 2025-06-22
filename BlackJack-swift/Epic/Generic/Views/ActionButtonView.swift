@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TheoKit
 
 struct ActionButtonView: View {
     
@@ -19,11 +20,15 @@ struct ActionButtonView: View {
             action()
         } label: {
             Text(title)
+                .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .semibold))
                 .fullWidth()
-                .padding(12)
+                .padding(TKDesignSystem.Padding.standard)
         }
-        .buttonStyle(.borderedProminent)
+        .roundedRectangleBorder(
+            TKDesignSystem.Colors.Info.c500,
+            radius: TKDesignSystem.Radius.standard
+        )
     }
 }
 

@@ -21,7 +21,9 @@ struct HandHeaderView: View {
                 .fullWidth(.leading)
             
             Text("\(value) points")
+                .contentTransition(.numericText())
                 .font(.title)
+                .animation(.smooth, value: value)
         }
     }
 }

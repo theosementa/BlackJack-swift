@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TheoKit
 
 struct RunningGameScreen: View {
     
@@ -34,26 +35,7 @@ struct RunningGameScreen: View {
                 PlayerHandView(session: viewModel.session)
                 
                 if viewModel.session.isGameStarted {
-                    Grid(horizontalSpacing: 16, verticalSpacing: 16) {
-                        GridRow {
-                            ActionButtonView(title: "Draw card") {
-                                viewModel.session.playerDrawCard()
-                            }
-                            
-                            ActionButtonView(title: "Double") {
-                                viewModel.session.playerDoubleDown()
-                            }
-                        }
-                        GridRow {
-                            ActionButtonView(title: "Hold") {
-                                viewModel.session.playerHold()
-                            }
-                            
-                            ActionButtonView(title: "Reset") {
-                                viewModel.session.resetGame()
-                            }
-                        }
-                    }
+                    PlayerGameActionView(session: viewModel.session)
                 } else {
                     VStack(spacing: 8) {
                         Text("Coins available")
@@ -75,6 +57,7 @@ struct RunningGameScreen: View {
             }
         }
         .padding(24)
+        .background(TKDesignSystem.Colors.Background.Theme.bg50)
         .onChange(of: viewModel.session.sessionResult) {
             if viewModel.session.sessionResult == .none {
                 viewModel.isEndGameScreenDisplayed = false
