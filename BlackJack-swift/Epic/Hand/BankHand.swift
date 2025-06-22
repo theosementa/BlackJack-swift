@@ -11,5 +11,5 @@ import Foundation
 final class BankHand: Hand {
     
     var cards: [PlayingCardModel] = []
-    
+        
 }

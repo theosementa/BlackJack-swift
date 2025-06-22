@@ -17,33 +17,60 @@ struct RunningGameScreen: View {
         VStack {
             VStack(spacing: 16) {
                 Text("Bank Hand")
-                CardHandView(cards: viewModel.bankHand.cards)
+                CardHandView(cards: viewModel.session.bankHand.cards)
             }
             
             Spacer()
             
             VStack(spacing: 32) {
                 VStack(spacing: 16) {
-                    Text("Player Hand \(viewModel.playerHand.value)")
-                    CardHandView(cards: viewModel.playerHand.cards)
-                }
-                Grid(horizontalSpacing: 16, verticalSpacing: 16) {
-                    GridRow {
-                        Button {
-                            if let card = viewModel.deck.drawCard() {
-                                viewModel.playerHand.addCard(card)
+                    Text("Player Hand \(viewModel.session.playerHand.value) \(viewModel.session.playerBet)")
+                    
+                    CardHandView(cards: viewModel.session.playerHand.cards)
+                    
+                    if viewModel.session.isGameStarted {
+                        Grid(horizontalSpacing: 16, verticalSpacing: 16) {
+                            GridRow {
+                                Button {
+                                    if let card = viewModel.session.deck.drawCard() {
+                                        viewModel.session.playerHand.addCard(card)
+                                    }
+                                } label: {
+                                    Text("Draw Card")
+                                        .fullWidth()
+                                        .padding()
+                                }
+                                .buttonStyle(.borderedProminent)
+                                
+                                Button {
+                                    viewModel.session.playerHand.reset()
+                                } label: {
+                                    Text("Reset hand")
+                                        .fullWidth()
+                                        .padding()
+                                }
+                                .buttonStyle(.borderedProminent)
                             }
-                        } label: {
-                            Text("Draw Card")
-                                .fullWidth()
-                                .padding()
+                            GridRow {
+                                Button {
+                                    viewModel.session.playerHold()
+                                } label: {
+                                    Text("Hold")
+                                        .fullWidth()
+                                        .padding()
+                                }
+                                .buttonStyle(.borderedProminent)
+                            }
                         }
-                        .buttonStyle(.borderedProminent)
+                    } else {
+                        PokerChipsView(bet: $viewModel.session.playerBet)
                         
                         Button {
-                            viewModel.playerHand.reset()
+                            if viewModel.session.validateBet() {
+                                viewModel.session.startGame()
+                            }
                         } label: {
-                            Text("Reset hand")
+                            Text("Bet!")
                                 .fullWidth()
                                 .padding()
                         }

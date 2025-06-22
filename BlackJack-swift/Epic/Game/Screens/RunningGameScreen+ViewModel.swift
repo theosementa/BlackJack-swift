@@ -11,10 +11,7 @@ extension RunningGameScreen {
     
     @Observable
     final class ViewModel {
-        var deck: Deck = .init()
-        
-        var bankHand: BankHand = .init()
-        var playerHand: PlayerHand = .init()
+        var session: GameSession = .init()
     }
     
 }

@@ -13,7 +13,6 @@ final class Deck {
 
     init() {
         self.cards = PlayingCardModel.allCards()
-        shuffle()
     }
 
     func shuffle() {

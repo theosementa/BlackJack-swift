@@ -11,11 +11,7 @@ protocol Hand {
     var cards: [PlayingCardModel] { get set }
     
     var value: Int { get }
-    
-//    func addCard(_ card: PlayingCardModel)
-    
-//    func reset()
-    
+        
     func isBlackjack() -> Bool
 }
 
