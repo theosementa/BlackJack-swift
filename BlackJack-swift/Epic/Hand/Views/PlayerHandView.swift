@@ -10,14 +10,14 @@ import SwiftUI
 struct PlayerHandView: View {
     
     // MARK: Dependencies
-    let session: GameSession
+    let gameManager: GameManager
     
     // MARK: - View
     var body: some View {
-        if session.isGameStarted {
+        if gameManager.isGameStarted {
             VStack(spacing: 16) {
-                HandHeaderView(name: "Player", value: session.playerHand.value)
-                CardHandView(cards: session.playerHand.cards)
+                HandHeaderView(name: "Player", value: gameManager.playerHand.value)
+                CardHandView(cards: gameManager.playerHand.cards)
             }
         }
     }
@@ -25,9 +25,9 @@ struct PlayerHandView: View {
 
 // MARK: - Preview
 #Preview {
-    let session: GameSession = .preview
-    PlayerHandView(session: session)
+    let gameManager: GameManager = .preview
+    PlayerHandView(gameManager: gameManager)
         .task {
-            await session.bankDrawCard()
+            await gameManager.bankDrawCard()
         }
 }

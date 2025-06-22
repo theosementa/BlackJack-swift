@@ -16,7 +16,7 @@ struct RunningGameScreen: View {
     // MARK: - View
     var body: some View {
         VStack {
-            BankHandView(session: viewModel.session)
+            BankHandView(gameManager: viewModel.gameManager)
             
             Spacer()
             
@@ -24,7 +24,7 @@ struct RunningGameScreen: View {
                 Text("Bet")
                     .font(.body)
                 
-                Text("\(viewModel.session.playerBet) €")
+                Text("\(viewModel.gameManager.playerBet) €")
                     .font(.title)
                     .fontWeight(.semibold)
             }
@@ -32,10 +32,10 @@ struct RunningGameScreen: View {
             Spacer()
             
             VStack(spacing: 16) {
-                PlayerHandView(session: viewModel.session)
+                PlayerHandView(gameManager: viewModel.gameManager)
                 
-                if viewModel.session.isGameStarted {
-                    PlayerGameActionView(session: viewModel.session)
+                if viewModel.gameManager.isGameStarted {
+                    PlayerGameActionView(gameManager: viewModel.gameManager)
                 } else {
                     VStack(spacing: 8) {
                         Text("Coins available")
@@ -46,11 +46,11 @@ struct RunningGameScreen: View {
                             .fontWeight(.semibold)
                     }
                     
-                    PokerChipsView(bet: $viewModel.session.playerBet)
+                    PokerChipsView(bet: $viewModel.gameManager.playerBet)
                     
                     ActionButtonView(title: "Bet!") {
-                        if viewModel.session.validateBet() {
-                            viewModel.session.startGame()
+                        if viewModel.gameManager.validateBet() {
+                            viewModel.gameManager.startGame()
                         }
                     }
                 }
@@ -58,10 +58,10 @@ struct RunningGameScreen: View {
         }
         .padding(24)
         .background(TKDesignSystem.Colors.Background.Theme.bg50)
-        .onChange(of: viewModel.session.sessionResult) {
-            if viewModel.session.sessionResult == .none {
+        .onChange(of: viewModel.gameManager.sessionResult) {
+            if viewModel.gameManager.sessionResult == .none {
                 viewModel.isEndGameScreenDisplayed = false
-                viewModel.session.resetGame()
+                viewModel.gameManager.resetGame()
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     viewModel.isEndGameScreenDisplayed = true
@@ -71,8 +71,8 @@ struct RunningGameScreen: View {
         .overlay {
             if viewModel.isEndGameScreenDisplayed {
                 ResultGameScreen(
-                    sessionResult: $viewModel.session.sessionResult,
-                    value: viewModel.session.playerBet
+                    sessionResult: $viewModel.gameManager.sessionResult,
+                    value: viewModel.gameManager.playerBet
                 )
             }
         }

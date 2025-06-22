@@ -10,26 +10,26 @@ import SwiftUI
 struct PlayerGameActionView: View {
     
     // MARK: Dependencies
-    let session: GameSession
+    let gameManager: GameManager
     
     var body: some View {
         Grid(horizontalSpacing: 16, verticalSpacing: 16) {
             GridRow {
                 ActionButtonView(title: "Draw card") {
-                    session.playerDrawCard()
+                    gameManager.playerDrawCard()
                 }
                 
                 ActionButtonView(title: "Double") {
-                    session.playerDoubleDown()
+                    gameManager.playerDoubleDown()
                 }
             }
             GridRow {
                 ActionButtonView(title: "Hold") {
-                    session.playerHold()
+                    gameManager.playerHold()
                 }
                 
                 ActionButtonView(title: "Reset") {
-                    session.resetGame()
+                    gameManager.resetGame()
                 }
             }
         }
@@ -38,5 +38,5 @@ struct PlayerGameActionView: View {
 
 // MARK: - Preview
 #Preview {
-    PlayerGameActionView(session: .preview)
+    PlayerGameActionView(gameManager: .preview)
 }

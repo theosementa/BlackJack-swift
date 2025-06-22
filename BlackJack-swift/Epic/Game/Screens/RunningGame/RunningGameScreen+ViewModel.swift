@@ -11,7 +11,7 @@ extension RunningGameScreen {
     
     @Observable
     final class ViewModel {
-        var session: GameSession = .init()
+        var gameManager: GameManager = .init()
         var isEndGameScreenDisplayed: Bool = false
     }
     

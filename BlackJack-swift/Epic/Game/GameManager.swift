@@ -1,5 +1,5 @@
 //
-//  GameSession.swift
+//  GameManager.swift
 //  BlackJack-swift
 //
 //  Created by Theo Sementa on 22/06/2025.
@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class GameSession {
+final class GameManager {
     
     private(set) var deck: Deck = .init()
     private(set) var bankHand: BankHand = .init()
@@ -20,7 +20,7 @@ final class GameSession {
     
 }
 
-extension GameSession {
+extension GameManager {
     
     func validateBet() -> Bool {
         guard playerBet > 0 else { return false }
@@ -128,9 +128,9 @@ extension GameSession {
 }
 
 // MARK: - Mocks
-extension GameSession {
+extension GameManager {
     
-    static let preview = GameSession()
+    static let preview = GameManager()
     
 }
 
