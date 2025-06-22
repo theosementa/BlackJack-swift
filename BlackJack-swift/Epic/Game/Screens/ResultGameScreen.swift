@@ -25,6 +25,7 @@ struct ResultGameScreen: View {
                 Text(description)
                     .font(.title)
                     .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
             }
             
             ActionButtonView(title: "Continue") {
@@ -55,9 +56,9 @@ struct ResultGameScreen: View {
         switch sessionResult {
         case .playerWin, .playerWinWithBlackJack:
             return .green
-        case .bankWin, .equal:
+        case .bankWin:
             return .red
-        case .none:
+        case .none, .equal:
             return .gray
         }
     }

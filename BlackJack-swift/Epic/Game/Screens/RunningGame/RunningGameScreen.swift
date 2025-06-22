@@ -15,37 +15,27 @@ struct RunningGameScreen: View {
     // MARK: - View
     var body: some View {
         VStack {
-            VStack(spacing: 16) {
-                HStack(spacing: 8) {
-                    Text("Bank Hand")
-                        .font(.title2)
-                        .fullWidth(.leading)
-                }
-                CardHandView(cards: viewModel.session.bankHand.cards)
+            BankHandView(session: viewModel.session)
+            
+            if !viewModel.session.isGameStarted {
+                Spacer()
                 
-                if viewModel.session.isGameStarted {
-                    Text("Value: \(viewModel.session.bankHand.value)")
-                        .font(.title3)
+                VStack(spacing: 8) {
+                    Text("Bet")
+                        .font(.body)
+                    
+                    Text("\(viewModel.session.playerBet) €")
+                        .font(.title)
+                        .fontWeight(.semibold)
                 }
             }
             
             Spacer()
             
             VStack(spacing: 16) {
-                HStack(spacing: 8) {
-                    Text("Player Hand")
-                        .font(.title2)
-                        .fullWidth(.leading)
-                    
-                    Text("\(viewModel.session.playerBet) €")
-                }
-                
-                CardHandView(cards: viewModel.session.playerHand.cards)
+                PlayerHandView(session: viewModel.session)
                 
                 if viewModel.session.isGameStarted {
-                    Text("Value: \(viewModel.session.playerHand.value)")
-                        .font(.title3)
-                    
                     Grid(horizontalSpacing: 16, verticalSpacing: 16) {
                         GridRow {
                             ActionButtonView(title: "Draw card") {
@@ -63,18 +53,22 @@ struct RunningGameScreen: View {
                         }
                     }
                 } else {
+                    VStack(spacing: 16) {
+                        Text("Coins available")
+                            .font(.body)
+                        
+                        Text("\(PlayerStorage.coins) €")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                    }
+                    
                     PokerChipsView(bet: $viewModel.session.playerBet)
                     
-                    Button {
+                    ActionButtonView(title: "Bet!") {
                         if viewModel.session.validateBet() {
                             viewModel.session.startGame()
                         }
-                    } label: {
-                        Text("Bet!")
-                            .fullWidth()
-                            .padding()
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
         }

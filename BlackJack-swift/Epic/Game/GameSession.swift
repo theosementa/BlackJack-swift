@@ -63,6 +63,7 @@ extension GameSession {
         
         if playerHand.value > 21 {
             sessionResult = .bankWin
+            PlayerStorage.removeCoins(playerBet)
         } else if playerHand.value == 21 {
             playerHold()
         }
@@ -73,6 +74,7 @@ extension GameSession {
         
         if playerHand.value > 21 {
             sessionResult = .bankWin
+            PlayerStorage.removeCoins(playerBet)
             return
         }
         
@@ -81,26 +83,32 @@ extension GameSession {
                 sessionResult = .equal
             } else {
                 sessionResult = .playerWinWithBlackJack
+                PlayerStorage.addCoins(playerBet)
             }
             return
         }
         
         if bankHand.value > 21 {
             sessionResult = .playerWin
+            PlayerStorage.addCoins(playerBet)
             return
         }
         
         if playerHand.value > bankHand.value {
             sessionResult = .playerWin
+            PlayerStorage.addCoins(playerBet)
         } else if playerHand.value < bankHand.value {
             sessionResult = .bankWin
+            PlayerStorage.removeCoins(playerBet)
         } else {
             sessionResult = .equal
         }
     }
     
     func playerDoubleDown() {
-        
+        playerBet *= 2
+        playerDrawCard()
+        playerHold()
     }
     
     func playerHold() {
@@ -111,3 +119,11 @@ extension GameSession {
     }
     
 }
+
+// MARK: - Mocks
+extension GameSession {
+    
+    static let preview = GameSession()
+    
+}
+

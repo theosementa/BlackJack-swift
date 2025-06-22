@@ -16,7 +16,10 @@ struct ChipButtonView: View {
     // MARK: - View
     var body: some View {
         Button {
-            bet += chip.value
+            let newBet = bet + chip.value
+            if newBet <= PlayerStorage.coins {
+                bet += chip.value
+            }
         } label: {
             Image(chip.image)
                 .resizable()
