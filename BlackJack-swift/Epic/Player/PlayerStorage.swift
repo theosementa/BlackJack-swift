@@ -48,13 +48,11 @@ extension PlayerStorage {
     
     static func addCoins(_ amount: Int) {
         coins += amount
-        print("🔥 ADD")
     }
     
     static func removeCoins(_ amount: Int) {
         guard coins >= amount else { return }
         coins -= amount
-        print("🔥 REMOVE")
     }
     
 }

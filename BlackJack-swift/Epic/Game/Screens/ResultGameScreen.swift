@@ -13,11 +13,34 @@ struct ResultGameScreen: View {
     @Binding var sessionResult: GameSessionResult
     var value: Int
     
+    var beforeValue: Int {
+        if sessionResult == .playerWinWithBlackJack {
+            return PlayerStorage.coins - value
+        }
+        if sessionResult.isPlayerWin {
+            return PlayerStorage.coins - value
+        } else if sessionResult == .equal {
+            return PlayerStorage.coins
+        } else {
+            return PlayerStorage.coins + value
+        }
+    }
+    
+    var earnedValue: Int {
+        if sessionResult == .playerWinWithBlackJack {
+            return (value * 3 / 2)
+        }
+        if sessionResult == .equal {
+            return 0
+        }
+        return value
+    }
+    
     // MARK: - View
     var body: some View {
         VStack(spacing: 32) {
             VStack(spacing: 4) {
-                Text(title)
+                Text(sessionResult.title)
                     .font(.system(size: 48))
                     .fontWeight(.bold)
                     .foregroundColor(color)
@@ -28,6 +51,28 @@ struct ResultGameScreen: View {
                     .multilineTextAlignment(.center)
             }
             
+            HStack {
+                VStack(spacing: 8) {
+                    Text("Before")
+                        .font(.body)
+                    
+                    Text("\(beforeValue) €")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                }
+                .fullWidth()
+                
+                VStack(spacing: 8) {
+                    Text("After")
+                        .font(.body)
+                    
+                    Text("\(PlayerStorage.coins) €")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                }
+                .fullWidth()
+            }
+            
             ActionButtonView(title: "Continue") {
                 sessionResult = .none
             }
@@ -35,21 +80,6 @@ struct ResultGameScreen: View {
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.opacity(0.6))
-    }
-    
-    var title: String {
-        switch sessionResult {
-        case .playerWin:
-            return "You Win!"
-        case .bankWin:
-            return "You Lose!"
-        case .equal:
-            return "It's a Tie!"
-        case .playerWinWithBlackJack:
-            return "Blackjack! You Win!"
-        case .none:
-            return "Game Over"
-        }
     }
     
     var color: Color {
@@ -66,13 +96,13 @@ struct ResultGameScreen: View {
     var description: String {
         switch sessionResult {
         case .playerWin:
-            return "You earned \(value) coins!"
+            return "You earned \(earnedValue) coins!"
         case .bankWin:
-            return "You lost \(value) coins."
+            return "You lost \(earnedValue) coins."
         case .equal:
             return "It's a tie! No coins earned or lost."
         case .playerWinWithBlackJack:
-            return "Blackjack! You earned \(value) coins!"
+            return "Blackjack! You earned \(earnedValue) coins!"
         case .none:
             return "Game Over"
         }

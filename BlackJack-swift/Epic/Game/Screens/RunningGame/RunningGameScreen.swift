@@ -17,17 +17,15 @@ struct RunningGameScreen: View {
         VStack {
             BankHandView(session: viewModel.session)
             
-            if !viewModel.session.isGameStarted {
-                Spacer()
+            Spacer()
+            
+            VStack(spacing: 8) {
+                Text("Bet")
+                    .font(.body)
                 
-                VStack(spacing: 8) {
-                    Text("Bet")
-                        .font(.body)
-                    
-                    Text("\(viewModel.session.playerBet) €")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                }
+                Text("\(viewModel.session.playerBet) €")
+                    .font(.title)
+                    .fontWeight(.semibold)
             }
             
             Spacer()
@@ -41,6 +39,10 @@ struct RunningGameScreen: View {
                             ActionButtonView(title: "Draw card") {
                                 viewModel.session.playerDrawCard()
                             }
+                            
+                            ActionButtonView(title: "Double") {
+                                viewModel.session.playerDoubleDown()
+                            }
                         }
                         GridRow {
                             ActionButtonView(title: "Hold") {
@@ -53,7 +55,7 @@ struct RunningGameScreen: View {
                         }
                     }
                 } else {
-                    VStack(spacing: 16) {
+                    VStack(spacing: 8) {
                         Text("Coins available")
                             .font(.body)
                         
@@ -85,7 +87,10 @@ struct RunningGameScreen: View {
         }
         .overlay {
             if viewModel.isEndGameScreenDisplayed {
-                ResultGameScreen(sessionResult: $viewModel.session.sessionResult, value: 0)
+                ResultGameScreen(
+                    sessionResult: $viewModel.session.sessionResult,
+                    value: viewModel.session.playerBet
+                )
             }
         }
     }
