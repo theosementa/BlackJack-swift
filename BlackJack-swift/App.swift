@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TheoKit
 
 @main
 struct BlackJack_swiftApp: App {
