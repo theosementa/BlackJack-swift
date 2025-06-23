@@ -13,6 +13,8 @@ enum PokerChip {
     case five
     case twentyFive
     case fifty
+    case oneHundred
+    case fiveHundred
     
     var value: Int {
         switch self {
@@ -24,6 +26,10 @@ enum PokerChip {
             return 25
         case .fifty:
             return 50
+        case .oneHundred:
+            return 100
+        case .fiveHundred:
+            return 500
         }
     }
     
@@ -37,6 +43,10 @@ enum PokerChip {
             return .pokerChipTwentyFive
         case .fifty:
             return .pokerChipFifty
+        case .oneHundred:
+            return .pokerChipOneHundred
+        case .fiveHundred:
+            return .pokerChipFiveHundred
         }
     }
 }

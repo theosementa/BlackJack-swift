@@ -12,13 +12,26 @@ struct PokerChipsView: View {
     // MARK: Dependencies
     @Binding var bet: Int
     
+    @State private var heightChip: CGFloat = 0
+    
     // MARK: - View
     var body: some View {
-        HStack {
-            ChipButtonView(bet: $bet, chip: .one)
-            ChipButtonView(bet: $bet, chip: .five)
-            ChipButtonView(bet: $bet, chip: .twentyFive)
-            ChipButtonView(bet: $bet, chip: .fifty)
+        VStack {
+            HStack {
+                ChipButtonView(bet: $bet, chip: .one)
+                    .getSize { self.heightChip = $0.height }
+                ChipButtonView(bet: $bet, chip: .five)
+                ChipButtonView(bet: $bet, chip: .twentyFive)
+                ChipButtonView(bet: $bet, chip: .fifty)
+            }
+            
+            HStack {
+                ChipButtonView(bet: $bet, chip: .oneHundred)
+                    .frame(width: heightChip, height: heightChip)
+                
+                ChipButtonView(bet: $bet, chip: .fiveHundred)
+                    .frame(width: heightChip, height: heightChip)
+            }
         }
     }
 }
