@@ -7,12 +7,18 @@
 
 import SwiftUI
 import TheoKit
+import NavigationKit
 
 @main
 struct BlackJack_swiftApp: App {
+    
+    @StateObject private var router: Router<AppDestination> = .init()
+    
     var body: some Scene {
         WindowGroup {
-            RunningGameScreen()
+            RoutedNavigationStack(router: router) {
+                RunningGameScreen()
+            }
         }
     }
 }

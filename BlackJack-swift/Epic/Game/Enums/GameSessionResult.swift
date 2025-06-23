@@ -37,4 +37,19 @@ enum GameSessionResult {
             return "Game Over"
         }
     }
+    
+    func addStatistics() {
+        switch self {
+        case .playerWin:
+            StatisticsManager.addWin()
+        case .playerWinWithBlackJack:
+            StatisticsManager.addWin()
+        case .bankWin:
+            StatisticsManager.addLoss()
+        case .equal:
+            StatisticsManager.addTie()
+        case .none:
+            break // No action needed for none case
+        }
+    }
 }

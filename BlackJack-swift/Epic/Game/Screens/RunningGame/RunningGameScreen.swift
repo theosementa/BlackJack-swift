@@ -7,6 +7,7 @@
 
 import SwiftUI
 import TheoKit
+import NavigationKit
 
 struct RunningGameScreen: View {
     
@@ -58,6 +59,24 @@ struct RunningGameScreen: View {
         }
         .padding(24)
         .background(TKDesignSystem.Colors.Background.Theme.bg50)
+        .overlay {
+            if viewModel.isEndGameScreenDisplayed {
+                ResultGameScreen(
+                    sessionResult: $viewModel.gameManager.sessionResult,
+                    value: viewModel.gameManager.playerBet
+                )
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationButton(
+                    route: .push,
+                    destination: AppDestination.statistics(.statistics)
+                ) {
+                    Image(systemName: "chart.bar.xaxis")
+                }
+            }
+        }
         .onChange(of: viewModel.gameManager.sessionResult) {
             if viewModel.gameManager.sessionResult == .none {
                 viewModel.isEndGameScreenDisplayed = false
@@ -65,15 +84,8 @@ struct RunningGameScreen: View {
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     viewModel.isEndGameScreenDisplayed = true
+                    viewModel.gameManager.sessionResult.addStatistics()
                 }
-            }
-        }
-        .overlay {
-            if viewModel.isEndGameScreenDisplayed {
-                ResultGameScreen(
-                    sessionResult: $viewModel.gameManager.sessionResult,
-                    value: viewModel.gameManager.playerBet
-                )
             }
         }
     }
