@@ -43,6 +43,7 @@ struct RunningGameScreen: View {
                             .font(.body)
                         
                         Text("\(PlayerStorage.coins) €")
+                            .contentTransition(.numericText())
                             .font(.title)
                             .fontWeight(.semibold)
                     }
@@ -54,8 +55,18 @@ struct RunningGameScreen: View {
                             viewModel.gameManager.startGame()
                         }
                     }
+                    
+                    if viewModel.gameManager.playerBet != 0 {
+                        ActionButtonView(
+                            title: "Reset bet",
+                            backgroundColor: TKDesignSystem.Colors.Background.Theme.bg100
+                        ) {
+                            viewModel.gameManager.playerBet = 0
+                        }
+                    }
                 }
             }
+            .animation(.smooth, value: viewModel.gameManager.playerBet)
         }
         .padding(24)
         .background(TKDesignSystem.Colors.Background.Theme.bg50)

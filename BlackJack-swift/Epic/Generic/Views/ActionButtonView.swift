@@ -12,6 +12,7 @@ struct ActionButtonView: View {
     
     // MARK: Dependencies
     var title: String
+    var backgroundColor: Color = TKDesignSystem.Colors.Info.c500
     var action: () -> Void
     
     // MARK: - View
@@ -26,7 +27,7 @@ struct ActionButtonView: View {
                 .padding(TKDesignSystem.Padding.standard)
         }
         .roundedRectangleBorder(
-            TKDesignSystem.Colors.Info.c500,
+            backgroundColor,
             radius: TKDesignSystem.Radius.standard
         )
     }
