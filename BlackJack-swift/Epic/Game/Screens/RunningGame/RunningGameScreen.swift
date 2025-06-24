@@ -56,14 +56,14 @@ struct RunningGameScreen: View {
                         }
                     }
                     
-                    if viewModel.gameManager.playerBet != 0 {
-                        ActionButtonView(
-                            title: "Reset bet",
-                            backgroundColor: TKDesignSystem.Colors.Background.Theme.bg100
-                        ) {
-                            viewModel.gameManager.playerBet = 0
-                        }
-                    }
+//                    if viewModel.gameManager.playerBet != 0 {
+//                        ActionButtonView(
+//                            title: "Reset bet",
+//                            backgroundColor: TKDesignSystem.Colors.Background.Theme.bg100
+//                        ) {
+//                            viewModel.gameManager.playerBet = 0
+//                        }
+//                    }
                 }
             }
             .animation(.smooth, value: viewModel.gameManager.playerBet)

@@ -33,6 +33,12 @@ struct StatisticsScreen: View {
                 value: "\(StatisticsManager.ties)"
             )
             
+            Button {
+                PlayerStorage.addCoins(100)
+            } label: {
+                Text("Add coins")
+            }
+
             Spacer()
         }
         .padding(24)
