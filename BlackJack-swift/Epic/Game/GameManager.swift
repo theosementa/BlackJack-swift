@@ -14,16 +14,22 @@ final class GameManager {
     private(set) var bankHand: BankHand = .init()
     private(set) var playerHand: PlayerHand = .init()
     
+    private let coinStore: CoinStore
+    
     var playerBet: Int = 0
     var sessionResult: GameSessionResult = .none
     var isGameStarted: Bool = false
+    
+    init(coinStore: CoinStore = PlayerStorageCoinStore()) {
+        self.coinStore = coinStore
+    }
     
 }
 
 extension GameManager {
     
     func validateBet() -> Bool {
-        guard playerBet > 0 else { return false }
+        guard playerBet > 0, playerBet <= coinStore.currentCoins else { return false }
         
         isGameStarted = true
         deck.shuffle()
@@ -58,7 +64,7 @@ extension GameManager {
             
             if playerHand.value > 21 {
                 sessionResult = .bankWin
-                PlayerStorage.removeCoins(playerBet)
+                coinStore.removeCoins(playerBet)
             } else if playerHand.value == 21 {
                 playerHold()
             }
@@ -68,7 +74,10 @@ extension GameManager {
     func playerDoubleDown() {
         guard isGameStarted, playerHand.cards.count == 2 else { return }
         
-        playerBet *= 2
+        let doubledBet = playerBet * 2
+        guard doubledBet <= coinStore.currentCoins else { return }
+        
+        playerBet = doubledBet
         playerDrawCard()
         playerHold()
     }
@@ -94,7 +103,7 @@ extension GameManager {
         
         if playerHand.value > 21 {
             sessionResult = .bankWin
-            PlayerStorage.removeCoins(playerBet)
+            coinStore.removeCoins(playerBet)
             return
         }
         
@@ -103,23 +112,23 @@ extension GameManager {
                 sessionResult = .equal
             } else {
                 sessionResult = .playerWinWithBlackJack
-                PlayerStorage.addCoins(playerBet * 3 / 2)
+                coinStore.addCoins(playerBet * 3 / 2)
             }
             return
         }
         
         if bankHand.value > 21 {
             sessionResult = .playerWin
-            PlayerStorage.addCoins(playerBet)
+            coinStore.addCoins(playerBet)
             return
         }
         
         if playerHand.value > bankHand.value {
             sessionResult = .playerWin
-            PlayerStorage.addCoins(playerBet)
+            coinStore.addCoins(playerBet)
         } else if playerHand.value < bankHand.value {
             sessionResult = .bankWin
-            PlayerStorage.removeCoins(playerBet)
+            coinStore.removeCoins(playerBet)
         } else {
             sessionResult = .equal
         }
@@ -133,4 +142,3 @@ extension GameManager {
     static let preview = GameManager()
     
 }
-

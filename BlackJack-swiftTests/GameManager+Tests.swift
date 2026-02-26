@@ -8,6 +8,22 @@
 import Testing
 @testable import BlackJack_swift
 
+final class InMemoryCoinStore: CoinStore {
+    var currentCoins: Int
+    
+    init(currentCoins: Int) {
+        self.currentCoins = currentCoins
+    }
+    
+    func addCoins(_ amount: Int) {
+        currentCoins += amount
+    }
+    
+    func removeCoins(_ amount: Int) {
+        currentCoins -= amount
+    }
+}
+
 struct GameManagerTests {
     
     let gameManager = GameManager()
@@ -22,6 +38,15 @@ extension GameManagerTests {
         
         #expect(gameManager.validateBet())
         #expect(gameManager.isGameStarted)
+    }
+    
+    @Test
+    func validateBetUsesInjectedCoinStore() {
+        let coinStore = InMemoryCoinStore(currentCoins: 50)
+        let manager = GameManager(coinStore: coinStore)
+        manager.playerBet = 100
+        
+        #expect(!manager.validateBet())
     }
     
     @Test
