@@ -25,6 +25,14 @@ extension GameManagerTests {
     }
     
     @Test
+    func validateBetShouldFailWhenBetIsHigherThanCoins() {
+        gameManager.playerBet = PlayerStorage.coins + 1
+        
+        #expect(!gameManager.validateBet())
+        #expect(!gameManager.isGameStarted)
+    }
+    
+    @Test
     func startGame() {
         gameManager.isGameStarted = true
         
@@ -61,6 +69,22 @@ extension GameManagerTests {
         
         #expect(gameManager.sessionResult == (gameManager.playerHand.value > 21 ? .bankWin : .none))
         #expect(gameManager.playerHand.cards.count == 3)
+    }
+    
+    @Test
+    func playerDoubleDownShouldNotIncreaseBetWhenInsufficientCoins() {
+        PlayerStorage.removeCoins(PlayerStorage.coins - 100)
+        gameManager.playerBet = 100
+        gameManager.isGameStarted = true
+        gameManager.playerHand.cards = [
+            PlayingCardModel(suit: .heart, rank: .two),
+            PlayingCardModel(suit: .spike, rank: .two)
+        ]
+        
+        gameManager.playerDoubleDown()
+        
+        #expect(gameManager.playerBet == 100)
+        PlayerStorage.addCoins(900)
     }
     
     @Test
