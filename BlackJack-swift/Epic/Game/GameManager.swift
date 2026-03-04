@@ -17,13 +17,18 @@ final class GameManager {
     var playerBet: Int = 0
     var sessionResult: GameSessionResult = .none
     var isGameStarted: Bool = false
+    private(set) var isDealerPlaying: Bool = false
+    
+    var canPlayerAct: Bool {
+        isGameStarted && sessionResult == .none && !isDealerPlaying
+    }
     
 }
 
 extension GameManager {
     
     func validateBet() -> Bool {
-        guard playerBet > 0 else { return false }
+        guard playerBet > 0, playerBet <= PlayerStorage.coins else { return false }
         
         isGameStarted = true
         deck.shuffle()
@@ -48,10 +53,11 @@ extension GameManager {
         playerBet = 0
         sessionResult = .none
         isGameStarted = false
+        isDealerPlaying = false
     }
     
     func playerDrawCard() {
-        guard isGameStarted else { return }
+        guard canPlayerAct else { return }
         
         if let card = deck.drawCard() {
             playerHand.cards.append(card)
@@ -66,17 +72,24 @@ extension GameManager {
     }
     
     func playerDoubleDown() {
-        guard isGameStarted, playerHand.cards.count == 2 else { return }
+        guard canPlayerAct, playerHand.cards.count == 2 else { return }
         
-        playerBet *= 2
+        let doubledBet = playerBet * 2
+        guard doubledBet <= PlayerStorage.coins else { return }
+        
+        playerBet = doubledBet
         playerDrawCard()
         playerHold()
     }
     
     func playerHold() {
+        guard canPlayerAct else { return }
+        
+        isDealerPlaying = true
         Task {
             await bankDrawCard()
             evaluateGameResult()
+            isDealerPlaying = false
         }
     }
     
@@ -133,4 +146,3 @@ extension GameManager {
     static let preview = GameManager()
     
 }
-
