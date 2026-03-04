@@ -20,6 +20,6 @@ final class Deck {
     }
 
     func drawCard() -> PlayingCardModel? {
-        return cards.isEmpty ? nil : cards.removeFirst()
+        return cards.isEmpty ? nil : cards.removeLast()
     }
 }

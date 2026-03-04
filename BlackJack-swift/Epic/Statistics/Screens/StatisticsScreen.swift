@@ -24,7 +24,7 @@ struct StatisticsScreen: View {
             )
             
             StatisticRowView(
-                title: "Loses",
+                title: "Losses",
                 value: "\(StatisticsManager.losses)"
             )
             
@@ -32,12 +32,6 @@ struct StatisticsScreen: View {
                 title: "Ties",
                 value: "\(StatisticsManager.ties)"
             )
-            
-            Button {
-                PlayerStorage.addCoins(100)
-            } label: {
-                Text("Add coins")
-            }
 
             Spacer()
         }
