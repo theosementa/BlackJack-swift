@@ -39,7 +39,7 @@ extension GameManager {
         guard isGameStarted else { return }
         
         playerHand.cards = [deck.drawCard(), deck.drawCard()].compactMap { $0 }
-        bankHand.cards = [deck.drawCard()].compactMap { $0 }
+        bankHand.cards = [deck.drawCard(), deck.drawCard()].compactMap { $0 }
         
         if playerHand.isBlackjack() {
             playerHold()

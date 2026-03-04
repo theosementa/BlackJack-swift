@@ -39,7 +39,7 @@ extension GameManagerTests {
         gameManager.startGame()
         
         #expect(gameManager.playerHand.cards.count == 2)
-        #expect(gameManager.bankHand.cards.count == 1)
+        #expect(gameManager.bankHand.cards.count == 2)
     }
     
     @Test
