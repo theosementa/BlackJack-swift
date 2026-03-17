@@ -18,19 +18,18 @@ struct PlayerGameActionView: View {
                 ActionButtonView(title: "Draw card") {
                     gameManager.playerDrawCard()
                 }
+                .disabled(!gameManager.canPlayerAct)
                 
                 ActionButtonView(title: "Double") {
                     gameManager.playerDoubleDown()
                 }
+                .disabled(!gameManager.canPlayerAct || gameManager.playerHand.cards.count != 2)
             }
             GridRow {
                 ActionButtonView(title: "Hold") {
                     gameManager.playerHold()
                 }
-                
-                ActionButtonView(title: "Reset") {
-                    gameManager.resetGame()
-                }
+                .disabled(!gameManager.canPlayerAct)
             }
         }
     }

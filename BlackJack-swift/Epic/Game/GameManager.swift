@@ -19,6 +19,11 @@ final class GameManager {
     var playerBet: Int = 0
     var sessionResult: GameSessionResult = .none
     var isGameStarted: Bool = false
+    private(set) var isDealerPlaying: Bool = false
+    
+    var canPlayerAct: Bool {
+        isGameStarted && sessionResult == .none && !isDealerPlaying
+    }
     
     init(coinStore: CoinStore = PlayerStorageCoinStore()) {
         self.coinStore = coinStore
@@ -40,7 +45,7 @@ extension GameManager {
         guard isGameStarted else { return }
         
         playerHand.cards = [deck.drawCard(), deck.drawCard()].compactMap { $0 }
-        bankHand.cards = [deck.drawCard()].compactMap { $0 }
+        bankHand.cards = [deck.drawCard(), deck.drawCard()].compactMap { $0 }
         
         if playerHand.isBlackjack() {
             playerHold()
@@ -54,10 +59,11 @@ extension GameManager {
         playerBet = 0
         sessionResult = .none
         isGameStarted = false
+        isDealerPlaying = false
     }
     
     func playerDrawCard() {
-        guard isGameStarted else { return }
+        guard canPlayerAct else { return }
         
         if let card = deck.drawCard() {
             playerHand.cards.append(card)
@@ -72,7 +78,7 @@ extension GameManager {
     }
     
     func playerDoubleDown() {
-        guard isGameStarted, playerHand.cards.count == 2 else { return }
+        guard canPlayerAct, playerHand.cards.count == 2 else { return }
         
         let doubledBet = playerBet * 2
         guard doubledBet <= coinStore.currentCoins else { return }
@@ -83,9 +89,13 @@ extension GameManager {
     }
     
     func playerHold() {
+        guard canPlayerAct else { return }
+        
+        isDealerPlaying = true
         Task {
             await bankDrawCard()
             evaluateGameResult()
+            isDealerPlaying = false
         }
     }
     

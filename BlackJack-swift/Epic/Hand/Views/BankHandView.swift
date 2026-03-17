@@ -12,12 +12,30 @@ struct BankHandView: View {
     // MARK: Dependencies
     let gameManager: GameManager
     
+    private var isHoleCardHidden: Bool {
+        gameManager.sessionResult == .none && gameManager.bankHand.cards.count > 1
+    }
+    
+    private var visibleBankCards: [PlayingCardModel] {
+        if isHoleCardHidden {
+            return Array(gameManager.bankHand.cards.prefix(1))
+        }
+        return gameManager.bankHand.cards
+    }
+    
+    private var visibleBankValue: Int {
+        if isHoleCardHidden {
+            return visibleBankCards.first?.value ?? 0
+        }
+        return gameManager.bankHand.value
+    }
+    
     // MARK: - View
     var body: some View {
         if gameManager.isGameStarted {
             VStack(spacing: 16) {
-                HandHeaderView(name: "Bank", value: gameManager.bankHand.value)
-                CardHandView(cards: gameManager.bankHand.cards)
+                HandHeaderView(name: "Bank", value: visibleBankValue)
+                CardHandView(cards: visibleBankCards)
             }
         }
     }
