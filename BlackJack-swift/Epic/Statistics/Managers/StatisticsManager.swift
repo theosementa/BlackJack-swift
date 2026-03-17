@@ -27,8 +27,26 @@ extension StatisticsManager {
         return wins + losses + ties
     }
     
+    static var winRate: Double {
+        guard gamePlayed > 0 else { return 0 }
+        return Double(wins) / Double(gamePlayed)
+    }
+    
+    static var lossRate: Double {
+        guard gamePlayed > 0 else { return 0 }
+        return Double(losses) / Double(gamePlayed)
+    }
+    
+    static var tieRate: Double {
+        guard gamePlayed > 0 else { return 0 }
+        return Double(ties) / Double(gamePlayed)
+    }
+    
+    static var winRatePercent: Int {
+        return Int((winRate * 100).rounded())
+    }
+    
 }
-
 
 extension StatisticsManager {
     
