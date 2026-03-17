@@ -11,14 +11,31 @@ struct StatisticRowView: View {
     
     let title: String
     let value: String
+    var subtitle: String? = nil
+    var progress: Double? = nil
+    var color: Color = .accentColor
     
     // MARK: - View
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption)
-            Text(value)
-                .font(.body)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.subheadline)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+                Text(value)
+                    .font(.headline)
+            }
+            if let progress {
+                ProgressView(value: progress)
+                    .tint(color)
+            }
         }
         .fullWidth(.leading)
     }
@@ -26,5 +43,5 @@ struct StatisticRowView: View {
 
 // MARK: - Preview
 #Preview {
-    StatisticRowView(title: "Preview", value: "200 €")
+    StatisticRowView(title: "Wins", value: "12", subtitle: "50%", progress: 0.5, color: .green)
 }
