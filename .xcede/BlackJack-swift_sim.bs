@@ -1,0 +1,1 @@
+{"executablePath":"BlackJack-swift.app\/BlackJack-swift","builtProductsDir":"\/Users\/tsementa\/Library\/Developer\/Xcode\/DerivedData\/BlackJack-swift-fyfvauspbvehypbqhpnblijkdaaa\/Build\/Products\/Debug-iphonesimulator","fullProductName":"BlackJack-swift.app"}
