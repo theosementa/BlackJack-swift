@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - theosementa/github-action # TODO: remove after testing the workflow
   workflow_dispatch: {}
 
 jobs:
