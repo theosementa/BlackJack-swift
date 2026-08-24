@@ -24,13 +24,16 @@ platform :ios do
       xcodeproj: "BlackJack-swift.xcodeproj"
     )
 
+    auth_flags = "-allowProvisioningUpdates " \
+                 "-authenticationKeyPath #{key_filepath} " \
+                 "-authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_ID']} " \
+                 "-authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_ISSUER_ID']}"
+
     build_app(
       scheme: "BlackJack-swift",
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates " \
-              "-authenticationKeyPath #{key_filepath} " \
-              "-authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_ID']} " \
-              "-authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_ISSUER_ID']}"
+      xcargs: auth_flags,
+      export_xcargs: auth_flags
     )
 
     upload_to_testflight(
