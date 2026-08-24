@@ -1,0 +1,13 @@
+# Xcode
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+build/
+*.ipa
+*.dSYM.zip
