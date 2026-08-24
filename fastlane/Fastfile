@@ -24,16 +24,13 @@ platform :ios do
       xcodeproj: "BlackJack-swift.xcodeproj"
     )
 
-    auth_flags = "-allowProvisioningUpdates " \
-                 "-authenticationKeyPath #{key_filepath} " \
-                 "-authenticationKeyID #{ENV['APP_STORE_CONNECT_API_KEY_ID']} " \
-                 "-authenticationKeyIssuerID #{ENV['APP_STORE_CONNECT_API_ISSUER_ID']}"
-
+    # gym detects the API key (with key_filepath) in the lane context and
+    # auto-injects -authenticationKeyPath/-authenticationKeyID/-authenticationKeyIssuerID
+    # into both the archive and export xcodebuild invocations.
     build_app(
       scheme: "BlackJack-swift",
       export_method: "app-store",
-      xcargs: auth_flags,
-      export_xcargs: auth_flags
+      xcargs: "-allowProvisioningUpdates"
     )
 
     upload_to_testflight(
