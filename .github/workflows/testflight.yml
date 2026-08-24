@@ -27,6 +27,11 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
 
+      - name: Configure git for private SPM dependencies
+        env:
+          SPM_DEPENDENCIES_TOKEN: ${{ secrets.SPM_DEPENDENCIES_TOKEN }}
+        run: git config --global url."https://x-access-token:${SPM_DEPENDENCIES_TOKEN}@github.com/".insteadOf "https://github.com/"
+
       - name: Resolve Swift packages
         run: xcodebuild -resolvePackageDependencies -project BlackJack-swift.xcodeproj -scheme BlackJack-swift
 
